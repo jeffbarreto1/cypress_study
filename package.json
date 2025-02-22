@@ -1,0 +1,12 @@
+{
+  "name": "cypress-express-mark",
+  "version": "1.0.0",
+  "description": "Estudos Cypress",
+  "main": "index.js",
+  "author": "Jefferson Santos",
+  "license": "MIT",
+  "packageManager": "yarn@4.6.0",
+  "devDependencies": {
+    "cypress": "12.2.0"
+  }
+}
