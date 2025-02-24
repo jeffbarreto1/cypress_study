@@ -27,4 +27,12 @@ describe('tasks', () => {
             .should('be.visible')
             .should('have.text', duplicity_message)
     });
+
+    it('It should not be possible to register an empty task', () => {
+        // Variables
+        const alert = 'This is a required field';
+        // Steps
+        cy.createTask()
+        cy.isRequired(alert)
+    });
 })

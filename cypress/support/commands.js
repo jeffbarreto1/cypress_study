@@ -24,12 +24,17 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('createTask', (value)=> {
+import endpoint from "./endpointsAPI"
+import taskSelector from "../selectors/tasks.sel.cy"
+
+Cypress.Commands.add('createTask', (value = '')=> {
     // Access the page to be tested
     cy.visit('http://localhost:3000')
-    // Enter a name for the task in the input
-    cy.get('#newTask')
-        .type(value)
+    if (value !== '') {
+        // Enter a name for the task in the input
+        cy.get(taskSelector.inputTask)
+            .type(value)
+    }
     // Click on the button that creates the new task
     cy.contains('button', 'Create').click()
 })
@@ -37,7 +42,7 @@ Cypress.Commands.add('createTask', (value)=> {
 Cypress.Commands.add('removeTaskByName', (value)=> {
     // Clean the test environment before proceeding
     cy.request({
-        url: 'http://localhost:3333/helper/tasks',
+        url: endpoint.helper,
         method: 'DELETE',
         body: { name: value },
     }).then(response => {
@@ -48,10 +53,19 @@ Cypress.Commands.add('removeTaskByName', (value)=> {
 Cypress.Commands.add('apiCreateTask', (value)=> {
     // Pre-register a task via API
     cy.request({
-        url: 'http://localhost:3333/tasks',
+        url: endpoint.task,
         method: 'POST',
         body: value,
     }).then(response => {
         expect(response.status).to.eq(201)
+    })
+})
+
+Cypress.Commands.add('isRequired', (value)=> {
+    //
+    cy.get(taskSelector.inputTask)
+    .invoke('prop', 'validationMessage')
+    .should((text) => {
+        expect(value).to.eq(text)
     })
 })
