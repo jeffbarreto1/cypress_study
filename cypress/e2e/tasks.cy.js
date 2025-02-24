@@ -5,13 +5,7 @@ describe('tasks', () => {
         // Variables
         const text = 'Estudar para Cypress';
         // Clean the test environment before proceeding
-        cy.request({
-            url: 'http://localhost:3333/helper/tasks',
-            method: 'DELETE',
-            body: { name: text },
-        }).then(response => {
-            expect(response.status).to.eq(204)
-        })
+        cy.removeTaskByName(text)
         // Access the page to be tested
         cy.visit('http://localhost:3000')
         // Enter a name for the task in the input
@@ -31,21 +25,9 @@ describe('tasks', () => {
         }
         const duplicity_message= 'Task already exists!'
         // Clean the test environment before proceeding
-        cy.request({
-            url: 'http://localhost:3333/helper/tasks',
-            method: 'DELETE',
-            body: { name: task.name },
-        }).then(response => {
-            expect(response.status).to.eq(204)
-        })
+        cy.removeTaskByName(task.name)
         // Pre-register a task via API
-        cy.request({
-            url: 'http://localhost:3333/tasks',
-            method: 'POST',
-            body: task,
-        }).then(response => {
-            expect(response.status).to.eq(201)
-        })
+        cy.createTask(task)
         // Access the page to be tested
         cy.visit('http://localhost:3000')
         // Enter a name for the task in the input
