@@ -72,7 +72,7 @@ Cypress.Commands.add('isRequired', (value)=> {
 
 Cypress.Commands.add('finishTask', (value)=> {
     cy.visit('http://localhost:3000')
-    // Find task button and click
+    // Find task and click finish button
     cy.contains('p', value)
     .parent()
     .find(taskSelector.buttonToggle)
@@ -80,5 +80,18 @@ Cypress.Commands.add('finishTask', (value)=> {
     // Check finish task
     cy.contains('p', value)
     .should('have.css', taskSelector.lineCSS, taskSelector.lineCSS_value)
+
+})
+
+Cypress.Commands.add('deleteTask', (value)=> {
+    cy.visit('http://localhost:3000')
+    // Find task and click delete button
+    cy.contains('p', value)
+    .parent()
+    .find(taskSelector.buttonDelete)
+    .click()
+    // Check delete task
+    cy.contains('p', value)
+    .should('not.exist')
 
 })

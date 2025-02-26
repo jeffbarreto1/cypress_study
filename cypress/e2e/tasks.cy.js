@@ -42,6 +42,7 @@ describe('tasks', () => {
     });
     
     context('status task', () => {
+
         it('Finish task', () => {
             // Variables
             const task = {
@@ -52,6 +53,17 @@ describe('tasks', () => {
             cy.removeTaskByName(task.name)
             cy.apiCreateTask(task)
             cy.finishTask(task.name)
+        });
+        it('Delete task', () => {
+            // Variables
+            const task = {
+                name: 'Excluir uma task',
+                is_done: false
+            }
+            // Steps
+            cy.removeTaskByName(task.name)
+            cy.apiCreateTask(task)
+            cy.deleteTask(task.name)
         });
     });
 
