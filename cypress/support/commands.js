@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import endpoint from "./endpointsAPI"
-import taskSelector from "../selectors/tasks.sel.cy"
+import taskSelector, { lineCSS_value } from "../selectors/tasks.sel.cy"
 
 Cypress.Commands.add('createTask', (value = '')=> {
     // Access the page to be tested
@@ -62,10 +62,23 @@ Cypress.Commands.add('apiCreateTask', (value)=> {
 })
 
 Cypress.Commands.add('isRequired', (value)=> {
-    //
+    // Check required field alert
     cy.get(taskSelector.inputTask)
     .invoke('prop', 'validationMessage')
     .should((text) => {
         expect(value).to.eq(text)
     })
+})
+
+Cypress.Commands.add('finishTask', (value)=> {
+    cy.visit('http://localhost:3000')
+    // Find task button and click
+    cy.contains('p', value)
+    .parent()
+    .find(taskSelector.buttonToggle)
+    .click()
+    // Check finish task
+    cy.contains('p', value)
+    .should('have.css', taskSelector.lineCSS, taskSelector.lineCSS_value)
+
 })
