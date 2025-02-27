@@ -24,12 +24,11 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-import endpoint from "./endpointsAPI"
 import taskSelector, { lineCSS_value } from "../selectors/tasks.sel.cy"
 
 Cypress.Commands.add('createTask', (value = '')=> {
     // Access the page to be tested
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     if (value !== '') {
         // Enter a name for the task in the input
         cy.get(taskSelector.inputTask)
@@ -42,7 +41,7 @@ Cypress.Commands.add('createTask', (value = '')=> {
 Cypress.Commands.add('removeTaskByName', (value)=> {
     // Clean the test environment before proceeding
     cy.request({
-        url: endpoint.helper,
+        url: Cypress.env('apiUrl') + '/helper/tasks',
         method: 'DELETE',
         body: { name: value },
     }).then(response => {
@@ -53,7 +52,7 @@ Cypress.Commands.add('removeTaskByName', (value)=> {
 Cypress.Commands.add('apiCreateTask', (value)=> {
     // Pre-register a task via API
     cy.request({
-        url: endpoint.task,
+        url: Cypress.env('apiUrl') + '/tasks',
         method: 'POST',
         body: value,
     }).then(response => {
@@ -71,7 +70,7 @@ Cypress.Commands.add('isRequired', (value)=> {
 })
 
 Cypress.Commands.add('finishTask', (value)=> {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     // Find task and click finish button
     cy.contains('p', value)
     .parent()
@@ -84,7 +83,7 @@ Cypress.Commands.add('finishTask', (value)=> {
 })
 
 Cypress.Commands.add('deleteTask', (value)=> {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     // Find task and click delete button
     cy.contains('p', value)
     .parent()
