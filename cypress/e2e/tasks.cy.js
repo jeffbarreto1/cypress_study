@@ -41,7 +41,7 @@ describe('tasks', () => {
 
     });
     
-    context('status task', () => {
+    context('Buttons task', () => {
 
         it('Finish task', () => {
             // Variables
@@ -54,6 +54,7 @@ describe('tasks', () => {
             cy.apiCreateTask(task)
             cy.finishTask(task.name)
         });
+        
         it('Delete task', () => {
             // Variables
             const task = {
